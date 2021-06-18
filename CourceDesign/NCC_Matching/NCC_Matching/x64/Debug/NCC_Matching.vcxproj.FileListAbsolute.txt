@@ -1,0 +1,3 @@
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\x64\Debug\NCC_Matching.pdb
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\x64\Debug\NCC_Matching.exe
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\x64\Debug\NCC_Matching.pdb

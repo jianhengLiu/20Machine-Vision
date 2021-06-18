@@ -1,0 +1,223 @@
+//
+// Created by chrisliu on 2020/4/9.
+//
+
+#include <iostream>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
+using namespace std;
+using namespace cv;
+
+struct template_data
+{
+	Mat Img;
+	int rows = 0;
+	int cols = 0;
+	int n = 0;
+	float m_t = 0;
+	float s_t = 0;
+
+	Mat firstItem;
+};
+
+void NCC_Matching_Init(template_data& inputTemplate, Mat templateImg)
+{
+	inputTemplate.Img = templateImg;
+
+	int rows = templateImg.rows;
+	int cols = templateImg.cols;
+
+	inputTemplate.rows = rows;
+	inputTemplate.cols = cols;
+	inputTemplate.n = rows * cols;
+
+	inputTemplate.m_t = 0;
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			inputTemplate.m_t += inputTemplate.Img.at<uchar>(i, j);
+		}
+	}
+	inputTemplate.m_t /= inputTemplate.n;
+
+	inputTemplate.s_t = 0;
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			inputTemplate.s_t += pow(inputTemplate.Img.at<uchar>(i, j) - inputTemplate.m_t, 2);
+		}
+	}
+	inputTemplate.s_t /= inputTemplate.n;
+	inputTemplate.s_t = sqrt(inputTemplate.s_t);
+
+	inputTemplate.firstItem = Mat(rows, cols, CV_32FC1);
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			inputTemplate.firstItem.at<float>(i, j) = (inputTemplate.Img.at<uchar>(i, j) - inputTemplate.m_t) / inputTemplate.s_t;
+		}
+	}
+}
+
+Mat NCC_Matching(Mat inputImage, template_data inputTemplate, float threshold_NCC = 0.9)
+{
+	Mat outputImage = inputImage;
+
+	int image_rows = inputImage.rows;
+	int image_cols = inputImage.cols;
+
+
+	float m_f0xN = 0;
+	for (int u = 0; u < inputTemplate.rows; u++)
+	{
+		for (int v = 0; v < inputTemplate.cols; v++)
+		{
+			m_f0xN += inputImage.at<uchar>(u, v);
+		}
+	}
+	float m_f0 = m_f0xN / inputTemplate.n;
+
+	float s_f0xN = 0;
+	for (int u = 0; u < inputTemplate.rows; u++)
+	{
+		for (int v = 0; v < inputTemplate.cols; v++)
+		{
+			s_f0xN += pow(inputImage.at<uchar>(u, v) - m_f0, 2);
+		}
+	}
+	float s_f0 = s_f0xN / inputTemplate.n;
+
+	float NCCxN = 0;
+	float NCC = 0;
+	float NCCmax = 0;
+	string text = "NCC=";
+
+	bool isFind = false;
+
+	float m_fxN = m_f0xN;
+	float s_fxN = s_f0xN;
+
+	float m_f = m_f0;
+	float s_f = s_f0;
+
+	for (int i = 0; i < image_rows - inputTemplate.rows; i=i++)
+	{
+		for (int j = 0; j < image_cols - inputTemplate.cols; j=j++)
+		{
+			if (j == 0 && i != 0)
+			{
+				for (int v = 0; v < inputTemplate.cols; v++)
+				{
+					m_f0xN -= inputImage.at<uchar>(i - 1, j + v);
+					m_f0xN += inputImage.at<uchar>(i + inputTemplate.rows - 1, j + v);
+				}
+				m_fxN = m_f0xN;
+				m_f = m_fxN / inputTemplate.n;
+
+				for (int v = 0; v < inputTemplate.cols; v++)
+				{
+					s_f0xN -= pow(inputImage.at<uchar>(i - 1, j + v) - m_f, 2);
+					s_f0xN += pow(inputImage.at<uchar>(i + inputTemplate.rows - 1, j + v) - m_f, 2);
+				}
+				s_fxN = s_f0xN;
+				s_f = m_fxN / inputTemplate.n;
+			}
+
+			if (j - 1 >= 0)
+			{
+				for (int u = 0; u < inputTemplate.rows; u++)
+				{
+					m_fxN -= inputImage.at<uchar>(i + u, j - 1);
+					m_fxN += inputImage.at<uchar>(i + u, j +inputTemplate.cols-1);
+				}
+				m_f = m_fxN / inputTemplate.n;
+
+				for (int u = 0; u < inputTemplate.rows; u++)
+				{
+					s_fxN -= pow(inputImage.at<uchar>(i + u, j - 1) - m_f, 2);
+					s_fxN += pow(inputImage.at<uchar>(i + u, j + inputTemplate.cols - 1) - m_f, 2);
+				}
+				s_f = s_fxN / inputTemplate.n;
+			}
+
+			for (int u = 0; u < inputTemplate.rows; u++)
+			{
+				for (int v = 0; v < inputTemplate.cols; v++)
+				{
+					NCCxN += inputTemplate.firstItem.at<float>(u, v) * (inputImage.at<uchar>(i + u, j + v) - m_f);
+				}
+			}
+			NCC = NCCxN / inputTemplate.n /  sqrt(s_f);
+			if (NCC > NCCmax)
+			{
+				NCCmax = NCC;
+			}
+			NCCxN = 0;
+			//cout << NCC << endl;
+			if (NCC >= threshold_NCC)
+			{
+				putText(outputImage, "NCC=" + to_string(NCC), Point(j, i), FONT_HERSHEY_SIMPLEX, 2, Scalar(255));
+				rectangle(outputImage, Rect(j, i, inputTemplate.cols, inputTemplate.rows), Scalar(255));
+				//NCCxN = 0;
+				isFind = true;
+			}
+			//else
+			//{
+			//	putText(outputImage, "NCC=" + to_string(NCC), Point(j, i), FONT_HERSHEY_SIMPLEX, 1, Scalar(255));
+			//	rectangle(outputImage, Rect(j, i, inputTemplate.cols, inputTemplate.rows), Scalar(255));
+			//	//NCCxN = 0;
+			//	isFind = false;
+			//}
+			//imshow("test", outputImage);
+			//waitKey(0);
+			if (isFind)
+			{
+				break;
+			}
+			//cout << "(" << i << "," << j << ")" << endl;
+		}
+
+		if (isFind)
+		{
+			break;
+		}
+	}
+	cout << "NCCmax=" << NCCmax << endl;
+	return outputImage;
+}
+
+int main(int argc, char** argv)
+{
+	template_data inputTemplate;
+	Mat templateImg = imread("D:/OneDrive - stu.hit.edu.cn/Lessons/Machine_Vision/Homeworks/8/Images/pattern.bmp");
+	cvtColor(templateImg, templateImg, COLOR_RGB2GRAY);
+	imshow("templateImg", templateImg);
+	NCC_Matching_Init(inputTemplate, templateImg);
+	cout << 1 << endl;
+	for (int i = 15; i <= 34; ++i)
+	{
+		Mat input_Image = imread("D:/OneDrive - stu.hit.edu.cn/Lessons/Machine_Vision/Homeworks/8/Images/IMAGEB" + to_string(i) + ".bmp");
+		cvtColor(input_Image, input_Image, COLOR_RGB2GRAY);
+		imshow("input_Image", input_Image);
+		//计时
+		double time_consumed = cv::getTickCount();
+		Mat output = NCC_Matching(input_Image, inputTemplate);
+		time_consumed = (cv::getTickCount() - time_consumed) / cv::getTickFrequency();
+		cout << "耗时：" << time_consumed << " s" << endl;
+		imshow("output", output);
+		/*cout << inputTemplate.m_t << endl;
+		cout << inputTemplate.s_t << endl;
+		cout << inputTemplate.template_cols << endl;
+		cout << inputTemplate.template_rows << endl;
+		cout << inputTemplate.template_n << endl;*/
+		cout << 1 << endl;
+		waitKey(0);
+	}
+	return 0;
+}

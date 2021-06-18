@@ -1,0 +1,132 @@
+﻿  main.cpp
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(210,21): warning C4244: “参数”: 从“int”转换到“const _Ty”，可能丢失数据
+          with
+          [
+              _Ty=float
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(211,21): warning C4244: “参数”: 从“int”转换到“const _Ty”，可能丢失数据
+          with
+          [
+              _Ty=float
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(219,50): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(237,53): warning C4244: “参数”: 从“double”转换到“_Ty”，可能丢失数据
+          with
+          [
+              _Ty=float
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(238,53): warning C4244: “参数”: 从“double”转换到“_Ty”，可能丢失数据
+          with
+          [
+              _Ty=float
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(239,29): warning C4244: “参数”: 从“int”转换到“_Ty”，可能丢失数据
+          with
+          [
+              _Ty=float
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(259,48): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(388,13): warning C4244: “初始化”: 从“_Ty”转换到“int”，可能丢失数据
+          with
+          [
+              _Ty=float
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(398,98): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(398,87): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(413,109): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(413,94): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(425,19): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(437,90): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(437,79): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(441,17): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(446,14): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(457,93): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(457,82): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(465,16): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(467,24): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(468,25): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(469,32): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(470,33): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(473,17): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(473,65): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(476,70): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(476,37): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(476,143): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(476,110): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(477,70): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(477,37): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(477,143): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(477,110): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(478,70): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(478,37): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(478,143): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(478,110): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(479,70): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(479,37): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(479,143): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\NCC_Matching\main.cpp(479,110): warning C4244: “参数”: 从“float”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+  NCC_Matching.vcxproj -> D:\OneDrive - stu.hit.edu.cn\Lessons\Machine_Vision\CourceDesign\NCC_Matching\x64\Debug\NCC_Matching.exe

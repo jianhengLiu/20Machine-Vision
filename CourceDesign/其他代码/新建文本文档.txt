@@ -1,0 +1,252 @@
+//
+// Created by chrisliu on 2020/4/9.
+//
+
+#include <iostream>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
+using namespace std;
+using namespace cv;
+
+struct template_data
+{
+	Mat Img;
+	int rows = 0;
+	int cols = 0;
+	int n = 0;
+	float m_t = 0;
+	float s_t = 0;
+
+	Mat firstItem;
+};
+
+void NCC_Matching_Init(template_data& inputTemplate, Mat templateImg)
+{
+	inputTemplate.Img = templateImg;
+
+	int rows = templateImg.rows;
+	int cols = templateImg.cols;
+
+	inputTemplate.rows = rows;
+	inputTemplate.cols = cols;
+	inputTemplate.n = rows * cols;
+
+	inputTemplate.m_t = 0;
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			inputTemplate.m_t += inputTemplate.Img.at<uchar>(i, j);
+		}
+	}
+	inputTemplate.m_t /= inputTemplate.n;
+
+	inputTemplate.s_t = 0;
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			inputTemplate.s_t += pow(inputTemplate.Img.at<uchar>(i, j) - inputTemplate.m_t, 2);
+		}
+	}
+	inputTemplate.s_t /= inputTemplate.n;
+	inputTemplate.s_t = sqrt(inputTemplate.s_t);
+
+	inputTemplate.firstItem = Mat(rows, cols, CV_32FC1);
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			inputTemplate.firstItem.at<float>(i, j) = (inputTemplate.Img.at<uchar>(i, j) - inputTemplate.m_t) / inputTemplate.s_t;
+		}
+	}
+}
+
+Rect NCC_Matching(Mat inputImage, template_data inputTemplate, float threshold_NCC = 0.7)
+{
+	Mat outputImage = inputImage;
+	Rect foundedRect;
+
+	int image_rows = inputImage.rows;
+	int image_cols = inputImage.cols;
+
+	float NCCxN = 0;
+	float NCC = 0;
+	string text = "NCC=";
+	bool isFind = false;
+	float NCCmax = 0;
+
+	float m_f = 0;
+	float s_f = 0;
+
+	for (int i = 0; i < image_rows - inputTemplate.rows; i = i++)
+	{
+		for (int j = 0; j < image_cols - inputTemplate.cols; j = j++)
+		{
+			m_f = 0;
+			for (int u = 0; u < inputTemplate.rows; u++)
+			{
+				for (int v = 0; v < inputTemplate.cols; v++)
+				{
+					m_f += inputImage.at<uchar>(i + u, j + v);
+				}
+			}
+			m_f /= inputTemplate.n;
+
+			s_f = 0;
+			for (int u = 0; u < inputTemplate.rows; u++)
+			{
+				for (int v = 0; v < inputTemplate.cols; v++)
+				{
+					s_f += pow(inputImage.at<uchar>(i + u, j + v) - m_f, 2);
+				}
+			}
+			s_f /= inputTemplate.n;
+			s_f = sqrt(s_f);
+
+			float temp = 0;
+			for (int u = 0; u < inputTemplate.rows; u++)
+			{
+				for (int v = 0; v < inputTemplate.cols; v++)
+				{
+					NCCxN += inputTemplate.firstItem.at<float>(u, v) * (inputImage.at<uchar>(i + u, j + v) - m_f);
+				}
+			}
+			NCC = NCCxN / inputTemplate.n / s_f;
+			NCCxN = 0;
+			if (NCC >= threshold_NCC)
+			{
+
+				if (NCC > NCCmax)
+				{
+					NCCmax = NCC;
+				}
+				else
+				{
+					foundedRect = Rect(j, i, inputTemplate.cols, inputTemplate.rows);
+					putText(outputImage, "NCC = " + to_string(NCCmax), Point(j - 1, i - 1), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(255));
+					rectangle(outputImage, foundedRect, Scalar(255));
+					cout << "Position=(" + to_string(i) + "," + to_string(j) + ")" << endl;
+					cout << "NCCmax=" << NCCmax << endl;
+					isFind = true;
+					return foundedRect;
+				}
+			}
+		}
+
+		if (isFind)
+		{
+			return foundedRect;
+		}
+	}
+	foundedRect.x = -1;
+	return foundedRect;
+}
+
+
+Rect pyramid_matching(Mat inputImage, Mat templateImage, int pyramid_order = 7, float threshold_NCC = 0.7)
+{
+	vector<Mat> vect_inputImage;
+	vector<Mat> vect_templateImage;
+	vector<template_data> vect_template_data;
+	template_data template_data_temp;
+	vect_inputImage.push_back(inputImage);
+	NCC_Matching_Init(template_data_temp, templateImage);
+	vect_template_data.push_back(template_data_temp);
+	for (int i = 0; i < pyramid_order; ++i)
+	{
+		pyrDown(inputImage, inputImage, Size(inputImage.cols / 2, inputImage.rows / 2));
+		pyrDown(templateImage, templateImage, Size(templateImage.cols / 2, templateImage.rows / 2));
+		vect_inputImage.push_back(inputImage);
+		vect_templateImage.push_back(templateImage);
+		
+		NCC_Matching_Init(template_data_temp, templateImage);
+		vect_template_data.push_back(template_data_temp);
+	}
+
+	Mat inputImage_temp;
+	
+	Rect foundedRect;
+	foundedRect.x = 0;
+	foundedRect.y = 0;
+	foundedRect.width = vect_inputImage.back().cols;
+	foundedRect.height = vect_inputImage.back().rows;
+	int num_order = 1;
+	//计时
+	double time_consumed = cv::getTickCount();
+	while (vect_inputImage.size() != 0)
+	{
+
+		template_data_temp = vect_template_data.back();
+		
+
+		cout << "inputImage_temp.cols" << inputImage_temp.cols << endl;
+		cout << "inputImage_temp.rows" << inputImage_temp.rows << endl;
+		cout << "foundedRect" << foundedRect << endl;
+		inputImage_temp = inputImage_temp(foundedRect);
+
+		//imshow("inputImage_temp" + to_string(num_order), inputImage_temp);
+		Rect foundedRect_temp = NCC_Matching(inputImage_temp, template_data_temp);
+		cout << "foundedRect_temp" << foundedRect_temp << endl;
+		if (foundedRect_temp.x < 0)
+		{
+			foundedRect.x = 0;
+			foundedRect.y = 0;
+			foundedRect.width = inputImage_temp.cols;
+			foundedRect.height = inputImage_temp.rows;
+			cout << "Can't find matching imgae!" << endl;
+			return foundedRect;
+		}
+
+		vect_inputImage.pop_back();
+		vect_templateImage.pop_back();
+
+		/*rectangle(inputImage_temp, foundedRect, Scalar(255));
+		imshow("output" + to_string(num_order), inputImage_temp);*/
+
+		if (vect_inputImage.size() == 0)
+		{
+			foundedRect.x = foundedRect.x + foundedRect_temp.x;
+			foundedRect.y = foundedRect.y + foundedRect_temp.y;
+			foundedRect.width = foundedRect_temp.width;
+			foundedRect.height = foundedRect_temp.height;
+
+			time_consumed = (cv::getTickCount() - time_consumed) / cv::getTickFrequency();
+			cout << "耗时：" << time_consumed << " s" << endl;
+			return foundedRect;
+		}
+
+		foundedRect.x = 2 * (foundedRect.x+ foundedRect_temp.x) - 2 * num_order;
+		foundedRect.y = 2 * (foundedRect.y + foundedRect_temp.y) - 2 * num_order;
+		foundedRect.width = 2 * foundedRect_temp.width + 4 * num_order;
+		foundedRect.height = 2 * foundedRect_temp.height + 4 * num_order;
+		num_order++;
+
+		
+
+	}
+}
+
+int main(int argc, char** argv)
+{
+	Mat templateImg = imread("../image/pattern.bmp");
+	cvtColor(templateImg, templateImg, COLOR_RGB2GRAY);
+	//imshow("templateImg", templateImg);
+	cout << 1 << endl;
+
+	Mat input_Image = imread("../image/1.bmp");
+	cvtColor(input_Image, input_Image, COLOR_RGB2GRAY);
+	//imshow("input_Image", input_Image);
+
+	
+	Rect foundedRect = pyramid_matching(input_Image, templateImg, 4);
+	
+	rectangle(input_Image, foundedRect, Scalar(255));
+	imshow("output", input_Image);
+	waitKey(0);
+
+	return 0;
+}

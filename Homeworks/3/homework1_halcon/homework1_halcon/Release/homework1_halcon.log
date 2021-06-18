@@ -1,0 +1,2 @@
+﻿  homework1_halcon.cpp
+C:\Users\94367\Desktop\homework1_halcon\homework1_halcon\homework1_halcon.cpp(1,10): fatal error C1083: 无法打开包括文件: “HalconCpp.h”: No such file or directory
